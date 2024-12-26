@@ -1,3 +1,13 @@
+/**
+ * @file vite.config.js
+ *
+ * @copyright © 2024 s3mat3
+ * This code is licensed under the MIT License, see the LICENSE file for details
+ *
+ * @brief
+ *
+ * @author s3mat3
+ */
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
