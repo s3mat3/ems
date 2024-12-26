@@ -1,0 +1,162 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use 'sass:color';
+@use '@assets/styles/sass/variables' as *;
+@use '@assets/styles/sass/base/box' as box;
+
+@function _calcHeight($size) {
+    @return $size *  $html-base-line-height * 1.4;
+}
+
+label {
+    // display: block;
+    padding-top: 1rex;
+    font-weight: $base-weight-semibold;
+    font-size: $text-size-normal;
+    &.is-small {
+        font-size: $text-size-small;
+    }
+    &.is-normal {
+    }
+    &.is-medium {
+        font-size: $text-size-medium;
+    }
+    &.is-large {
+        font-size: $text-size-large;
+    }
+}
+
+
+input:not([type="checkbox"],[type="radio"],[type="submit"],[type="button"],[type="reset"]),
+select,
+textarea {
+    @mixin _size-adjust($text-size, $icon-size, $radius) {
+        $--padding: calc($icon-size + 1rem);
+        height: _calcHeight($text-size);
+        font-size: $text-size;
+        border-radius: $radius;
+        &+span.icon {
+            font-size: $icon-size;
+        }
+        &.has-icon-left {
+            padding-left: $--padding;
+        }
+        &.has-icon-right {
+            padding-right: $--padding;
+        }
+    }
+    @include box.box-base($color-default, $radius-normal, 1px, $bg-default);
+    font-size: $text-size-normal;
+    margin: auto;
+    width: 100%;
+    max-width: 100%;
+    &.is-small {
+        @include _size-adjust($text-size-small, $icon-text-small, $radius-small);
+    }
+    &.is-normal {
+        @include _size-adjust($text-size-normal, $icon-text-normal, $radius-normal);
+    }
+    &.is-medium {
+        @include _size-adjust($text-size-medium, $icon-text-medium, $radius-medium);
+    }
+    &.is-large {
+        @include _size-adjust($text-size-large, $icon-text-large, $radius-large);
+    }
+    &.is-primary {
+        @include box-color($color-primary, 0%, 50%, -25%);
+    }
+    &.is-info {
+        @include box-color($color-info, 0%, 50%, -25%);
+    }
+    &.is-success {
+        @include box-color($color-success, 0%, 50%, -25%);
+    }
+    &.is-warning {
+        @include box-color($color-warning, 0%, 50%, -25%);
+    }
+    &.is-error {
+        @include box-color($color-error, 0%, 50%, -25%);
+    }
+    &.is-danger {
+        @include box-color($color-danger, 0%, 50%, -25%);
+    }
+}
+
+:placeholder {
+    color: $base-placeholder-color;
+}
+:disabled,
+:disabled:hover {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.button,
+[type="button"],
+[type="reset"],
+[type="submit"],
+button {
+    @mixin _size-adjust($text-size, $icon-size) {
+        font-size: $text-size;
+        height: calcHeight($text-size);
+        &.has-icon {
+            .icon{
+                font-size: $icon-size;
+            }
+        }
+    }
+    @include box.box-base($color-default, $radius-normal, 1px, $bg-default);
+    max-width: 100%;
+    margin: auto;
+    padding: 0.5rem 1rem;
+    @include box-color($achromatic-lightgrey, $color-darkness, $color-lightness, $color-darkness);
+    font-size: $text-size-normal;
+    // font-weight: $base-weight-medium;
+    text-align: center;
+    // transition: opacity 0.2s ease;
+    transition: border-color 0.25s;
+    text-decoration: none;
+    transform: scale(1);
+    cursor: pointer;
+    &:hover {
+        opacity: 0.7;
+    }
+    &:focus,
+    &:focus-visible {
+        outline: 0.4rem auto;
+    }
+    &.is-primary {
+        @include box-color($color-primary, -25%, 50%, -25%);
+    }
+    &.is-info {
+        @include box-color($color-info, -25%, 50%, -25%);
+    }
+    &.is-success {
+        @include box-color($color-success, -25%, 50%, -25%);
+    }
+    &.is-warning {
+        @include box-color($color-warning, -25%, 50%, -25%);
+    }
+    &.is-error {
+        @include box-color($color-error, -25%, 50%, -25%);
+    }
+    &.is-danger {
+        @include box-color($color-danger, -25%, 50%, -25%);
+    }
+    &.is-small {
+        @include _size-adjust($text-size-small, $icon-text-small);
+    }
+    &.is-normal {
+        @include _size-adjust($text-size-normal, $icon-text-normal);
+    }
+    &.is-medium {
+        @include _size-adjust($text-size-medium, $icon-text-medium);
+    }
+    &.is-large {
+        @include _size-adjust($text-size-large, $icon-text-large);
+    }
+    &.is-full-width {
+        width: 100%;
+    }
+}

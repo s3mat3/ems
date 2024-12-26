@@ -1,0 +1,57 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use 'sass:color';
+@use '@assets/styles/sass/variables' as *;
+
+@mixin box-base ($color: $accent-blue, $radius: $base-border-radius, $width: 1px, $background: $base-skyblue) {
+    display: block;
+    @include solid-border($color, $radius, $width);
+    box-shadow: 0 1px 3px $achromatic-grey;
+    background: $background;
+}
+
+.test-box {
+    height: 5vh;
+    @include box-base();
+}
+
+.free-box {
+    @include box-base();
+    &.is-primary {
+        background: color.adjust($bg-primary, $alpha: -0.8);
+        border-color: color.scale($bg-primary, $lightness: -25%);
+        color: color.scale($bg-primary, $lightness: -50%);
+    }
+    &.is-info {
+        background: color.adjust($bg-info, $alpha: -0.5);
+        border-color: color.scale($bg-info, $lightness: -25%);
+        color: color.scale($bg-info, $lightness: -50%);
+    }
+    &.is-success {
+        background: color.adjust($bg-success, $alpha: -0.7);
+        border-color: color.scale($bg-success, $lightness: -25%);
+        color: color.scale($bg-success, $lightness: -50%);
+    }
+    &.is-warning {
+        background: color.adjust($bg-warning, $alpha: -0.7);
+        border-color: color.scale($bg-warning, $lightness: -25%);
+        color: color.scale($achromatic-grey, $lightness: -50%);
+    }
+    &.is-error {
+        background: color.adjust($bg-error, $alpha: -0.7);
+        border-color: color.scale($bg-error, $lightness: -25%);
+        color: color.scale($bg-error, $lightness: -50%);
+    }
+    &.is-danger {
+        // old: rgba($bg-danger, 0.5) => new: color.adjust($bg-danger, $alpha: -0.5)
+        background: color.adjust($bg-danger, $alpha: -0.8);
+        // old: darken($bg-danger, 25%) => new: color.scale($bg-danger, $lightness: -25%)
+        // old: lighten($bg-danger, 25%) => new: color.scale($bg-danger, $lightness: 25%)
+        border-color: color.scale($bg-danger, $lightness: -25%);
+        color: color.scale($bg-danger, $lightness: -50%);
+    }
+    &.text-is-default {
+        color: $text-default;
+    }
+}

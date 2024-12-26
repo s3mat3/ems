@@ -1,0 +1,30 @@
+ //! @copyright © 2024 s3mat3
+ //! This code is licensed under the MIT License, see the LICENSE file for details
+ //! @author s3mat3
+@use '@assets/styles/sass/variables' as *;
+
+.base-layout{
+    display: grid;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+    grid-gap: 0.1rem;
+    grid-auto-rows: $base-grid-rows-height;
+    .header {
+        grid-column: col-start / span 12;
+    }
+    .side {
+        grid-column: col-start / span 3;
+        grid-row: 2 / 8;
+    }
+    .nav {
+        grid-column: 4 / span 9;
+        grid-row: 2;
+    }
+    .content {
+        grid-column: 4 / span 9;
+        grid-row: 3 / 8;
+    }
+    .footer {
+        grid-column: span 12;
+        grid-row: 8;
+    }
+}

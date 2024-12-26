@@ -1,0 +1,54 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use 'sass:color';
+@use '@assets/styles/sass/variables' as *;
+@use '@assets/styles/sass/base/box' as box;
+
+.card {
+    @mixin _header($color, $darken: -25%) {
+        header {
+            .title{
+                background: color.scale($color, $lightness: $darken);
+            }
+        }
+    }
+    @include card-base(100%, inherit, auto, 0);
+    @include box.box-base($border-color-default, $border-radius-default, $border-width-default, $bg-default);
+    header, footer {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        .title {
+            @include simple-title;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            @include text($text-size-h2, $base-weight-semibold);
+        }
+    }
+    &.is-primary {
+        @include box-color($color-primary, -25%, 50%);
+        @include _header($color-primary);
+    }
+    &.is-info {
+        @include box-color($color-info, -25%, 50%);
+        @include _header($color-info);
+    }
+    &.is-success {
+        @include box-color($color-success, -25%, 50%);
+        @include _header($color-success);
+    }
+    &.is-warning {
+        @include box-color($color-warning, -25%, 50%);
+        @include _header($color-warning);
+    }
+    &.is-error {
+        @include box-color($color-error, -25%, 50%);
+        @include _header($color-error);
+    }
+    &.is-danger {
+        @include box-color($color-danger, -25%, 50%);
+        @include _header($color-danger);
+    }
+}

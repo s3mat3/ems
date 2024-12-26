@@ -1,0 +1,42 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use '@assets/styles/sass/variables' as *;
+
+table {
+    $table-caption-height: 4vh;
+    width: 100%;
+    margin: auto;
+    margin-top: 0;
+    border: none;
+    border-spacing: 0;
+    caption {
+        display: table-caption;
+        width: 100%;
+        height: 4vh;
+        @include text($text-size-h6, $base-weight-bold);
+        text-align: center;
+        vertical-align: bottom;
+        background: $accent-skyblue;
+    }
+    thead,tfoot{
+        border-bottom: 2px solid $achromatic-grey;
+        tr {
+            td, th {
+                @include text($text-size-medium, $base-weight-semibold);
+                vertical-align: middle;
+                padding: 0.2rem;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td, th {
+                @include text($text-size-normal, $base-weight-medium);
+                vertical-align: middle;
+                padding: 0.2rem;
+            }
+        }
+
+    }
+}

@@ -1,0 +1,103 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use '@assets/styles/sass/variables' as *;
+
+html {
+    @include text($html-base-font-size, $html-base-font-weight, $base-font-color);
+    font-family: $html-base-font-family;
+    line-height: $html-base-line-height;
+    text-size-adjust: 100%;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+body {
+  margin: auto;
+  padding: 0;
+  // line-height: 200%;
+  background-color: $base-bg-color;
+  @include text($text-size-medium, $base-weight-normal, $base-font-color);
+}
+
+h1 {
+    @include text($text-size-h1, $base-weight-bold);
+}
+h2 {
+    @include text($text-size-h2, $base-weight-semibold);
+}
+h3 {
+    @include text($text-size-h3, $base-weight-semibold);
+}
+h4 {
+    @include text($text-size-h4, $base-weight-semibold);
+}
+h5 {
+    @include text($text-size-h5, $base-weight-medium);
+}
+h6 {
+    @include text($text-size-h6, $base-weight-medium);
+}
+
+
+.noselect {
+    user-select: none;
+}
+
+.title {
+    @include simple-title;
+}
+
+.is-left {
+    text-align: left;
+}
+
+.is-center {
+    text-align: center;
+}
+
+.is-right {
+    text-align: right;
+}
+
+.no-border {
+    border: none;
+}
+
+@for $i from 1 through 10 {
+    .has-inside-#{$i} {
+        $--padding: calc($i / 10);
+        padding: #{$--padding}rem #{$--padding}rem;
+    }
+}
+@for $i from 1 through 10 {
+    .has-inside-tb-#{$i} {
+        $--padding: calc($i / 10);
+        padding-top: #{$--padding}rem;
+        padding-bottom: #{$--padding}rem;
+    }
+}
+
+@for $i from 1 through 10 {
+    .has-outside-#{$i} {
+        $--margin: calc($i / 10);
+        margin: #{$--margin}rem #{$--margin}rem;
+    }
+}
+
+@for $i from 1 through 10 {
+    .has-outside-tb-#{$i} {
+        $--margin: calc($i / 10);
+        margin-top: #{$--margin}rem;
+        margin-bottom: #{$--margin}rem;
+    }
+}
+
+@for $i from 1 through 10 {
+    .is-width-#{$i} {
+        $--width: calc($i * 10)'%';
+        width: #{$--width};
+    }
+}

@@ -1,0 +1,75 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use 'sass:color';
+@use '@assets/styles/sass/variables' as *;
+@use '@assets/styles/sass/base/box' as box;
+
+@mixin _icon-card-color($color, $iconName) {
+    $--darken: color.scale($color, $lightness: -50%);
+    background: color.scale($color, $lightness: 50%);
+    border-color: color.scale($color, $lightness: -25%);
+    .message-dialog-title {
+        background: color.scale($color, $lightness: 0%);
+    }
+    .message-dialog-body {
+        .message {
+            border-left-color: $--darken;
+        }
+        .icon::before {
+            display: block;
+            font-family: 'Material Symbols Sharp';
+            font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+            font-size: $icon-size-large;
+            content: '#{$iconName}';
+            color: $--darken;
+        }
+    }
+}
+
+dialog.message-dialog {
+    @include card-base(inherit, 20vh, auto, 0);
+    max-width: 20vw;
+
+    // @include box.box-base($border-color-default, $radius-large, $border-width-default, $bg-default);
+    .message-dialog-title {
+        @include simple-title;
+        margin-top: 0;
+        margin-bottom: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        @include text($text-size-h4, $base-weight-semibold);
+    }
+    .message-dialog-body {
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .message {
+            border-left: 2px solid;
+            padding-left: 1rem;
+        }
+    }
+    &.is-primary {
+        @include _icon-card-color($color-primary, 'comment');
+    }
+
+    &.is-info {
+        @include _icon-card-color($color-info, 'info');
+    }
+    &.is-success {
+        @include _icon-card-color($color-success, 'check');
+    }
+    &.is-warning {
+        @include _icon-card-color($color-warning, 'warning');
+    }
+    &.is-error {
+        @include _icon-card-color($color-error, 'error');
+    }
+    &.is-danger {
+        @include _icon-card-color($color-danger, 'dangerous');
+    }
+}

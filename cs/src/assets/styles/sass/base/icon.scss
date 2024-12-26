@@ -1,0 +1,90 @@
+//! @copyright © 2024 s3mat3
+//! This code is licensed under the MIT License, see the LICENSE file for details
+//! @author s3mat3
+@use 'sass:color';
+@use '@assets/styles/sass/variables' as *;
+
+$--icon-size: $icon-size-normal !default;
+span.icon {
+    font-family: 'Material Symbols Sharp';
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: $icon-size-normal;
+    vertical-align: middle;
+    &.is-small {
+        font-size: $icon-size-small;
+    }
+    &.is-normal {
+        font-size: $icon-size-normal;
+    }
+    &.is-medium {
+        font-size: $icon-size-medium;
+    }
+    &.is-large {
+        font-size: $icon-size-large;
+    }
+    &.is-fill {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    // colors
+    &.is-primary {
+        color: $color-primary;
+    }
+    &.is-info {
+        color: $color-info;
+    }
+    &.is-success {
+        color: $color-success;
+    }
+    &.is-warning {
+        color: $color-warning;
+    }
+    &.is-error {
+        color: $color-error;
+    }
+    &.is-danger {
+        color: $color-danger;
+    }
+    // weight
+    &.is-thin {
+        font-weight: $icon-weight-thin;
+    }
+    &.is-extralight {
+        font-weight: $icon-weight-extralight;
+    }
+    &.is-light {
+        font-weight: $icon-weight-light;
+    }
+    &.is-normal {
+        font-weight: $icon-weight-normal;
+    }
+    &.is-medium {
+        font-weight: $icon-weight-medium;
+    }
+    &.is-semibold {
+        font-weight: $icon-weight-semibold;
+    }
+    &.is-bold {
+        font-weight: $icon-weight-bold;
+    }
+}
+
+div.icon, p.icon {
+    position: relative;
+    margin: auto;
+    &:has(.has-icon-left) {
+        :last-child {
+            position: absolute;
+            top: 50%;
+            left: 0.2rem;
+            transform: translateY(-50%);
+        }
+    }
+    &:has(.has-icon-right) {
+        :last-child {
+            position: absolute;
+            top: 50%;
+            right: 0.2rem;
+            transform: translateY(-50%);
+        }
+    }
+}
