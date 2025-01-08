@@ -1,4 +1,4 @@
-module emas/api/my-first-golang
+module emas/my-first-golang/single
 
 go 1.23.4
 
