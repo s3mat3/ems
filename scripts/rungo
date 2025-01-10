@@ -1,0 +1,6 @@
+#!/bin/sh
+####
+# install reflex
+# go install github.com/cespare/reflex@latest
+####
+reflex -r '(\.go$|go\.mod)' -s go run $1
