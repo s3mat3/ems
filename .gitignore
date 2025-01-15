@@ -71,5 +71,7 @@ pg_data/
 .ccls-cache
 compile_commands.json
 #
-# misc
+# docker
 #
+pg-data/
+.env

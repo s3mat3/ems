@@ -1,0 +1,108 @@
+services:
+  ###############
+  ## db server ##
+  ###############
+  db:
+    #image: postgres:15-alpine
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+    container_name: db-server
+    # DB_USER, DB_PASSWORD come from ./.env (not git control)
+    environment:
+      #POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      LANG: C.UTF-8
+      TZ: Asia/Tokyo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 6s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+    restart:
+      on-failure
+    tty: true
+    stdin_open: true
+    ports:
+      - "25432:5432"
+    networks:
+       ems_net:
+         ipv4_address: 172.16.100.100
+  #############
+  ## develop ##
+  #############
+  ## for backend(golang)
+  backend:
+    #image: builder:latest
+    container_name: backend
+    build:
+      context: ..
+      dockerfile: ./trial-env/backend/Dockerfile
+      #### USERNAME, USER_ID come from ./.env (not git control)
+      args:
+        - USERNAME=${USERNAME}
+        - USER_ID=${USER_ID}
+    environment:
+      LANG: C.UTF-8
+      TZ: Asia/Tokyo
+    volumes:
+      - ../ss:/home/${USER}/projects/ems/ss
+      - ../scripts:/home/${USER}/projects/ems/scripts
+    depends_on:
+      db:
+        condition: service_healthy
+    restart:
+      on-failure
+    tty: true
+    stdin_open: true
+    ports:
+      - "20080:20080"
+    networks:
+       ems_net:
+         ipv4_address: 172.16.100.220
+  ## for frontend (vite environment)
+  frontend:
+    #image: builder:latest
+    container_name: frontend
+    build:
+      context: ..
+      dockerfile: ./trial-env/frontend/Dockerfile
+      #### USERNAME, USER_ID come from ./.env (not git control)
+      args:
+        - USERNAME=${USERNAME}
+        - USER_ID=${USER_ID}
+    environment:
+      LANG: C.UTF-8
+      TZ: Asia/Tokyo
+    volumes:
+      - ../cs:/home/${USER}/projects/ems/cs
+    #entrypoint: npm run dev
+    depends_on:
+      - backend
+    restart:
+      on-failure
+    tty: true
+    stdin_open: true
+    ports:
+      - "10080:10080"
+    networks:
+       ems_net:
+         ipv4_address: 172.16.100.210
+#############################
+## config internal network ##
+#############################
+networks:
+  ems_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.100.0/24
+  #
+  default:
+    name: vlan_ems
+    driver: bridge
+

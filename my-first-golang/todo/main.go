@@ -9,10 +9,18 @@
 package main
 
 import (
+    "log"
+    "github.com/jmoiron/sqlx"
+    _ "github.com/lib/pq"
     "todo/driver/web"
 )
 
 func main() {
+    _, err := sqlx.Open("postgres", "postgres@/test_db")
+    if err != nil {
+        log.Fatal(err)
+    }
+
     router := web.SetupRoute()
     if err := router.Run(":20080"); err != nil {
         panic(err)

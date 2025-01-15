@@ -18,6 +18,10 @@ export default defineConfig({
     root,
     base: './',
     publicDir: true,
+    server: {
+        host: '0.0.0.0',
+        port: 10080
+    },
     resolve: {
         alias: {
             '@pages' : resolve(root, 'pages'),
