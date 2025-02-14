@@ -12,13 +12,14 @@ services:
     environment:
       #POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+      #POSTGRES_DB: emsdb
       LANG: C.UTF-8
       TZ: Asia/Tokyo
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 6s
-      timeout: 5s
-      retries: 5
+      interval: 4s
+      timeout: 2s
+      retries: 10
       start_period: 5s
     volumes:
       - ./pg-data:/var/lib/postgresql/data
@@ -34,7 +35,9 @@ services:
   #############
   ## develop ##
   #############
-  ## for backend(golang)
+  #########################
+  ## for backend(golang) ##
+  #########################
   backend:
     #image: builder:latest
     container_name: backend
@@ -51,6 +54,15 @@ services:
     volumes:
       - ../ss:/home/${USER}/projects/ems/ss
       - ../scripts:/home/${USER}/projects/ems/scripts
+      - ./go:/go
+    working_dir: /home/${USER}/projects/ems/ss
+    command: ../scripts/rungo ./cmd/manage/main.go
+    healthcheck:
+      test: "wget --no-check-certificate --spider https://172.16.100.220:10443/helth || exit 1"
+      interval: 10s
+      timeout: 8s
+      retries: 5
+      start_period: 30s
     depends_on:
       db:
         condition: service_healthy
@@ -59,11 +71,13 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - "20080:20080"
+      - "10443:10443"
     networks:
        ems_net:
          ipv4_address: 172.16.100.220
-  ## for frontend (vite environment)
+  #####################################
+  ## for frontend (vite environment) ##
+  #####################################
   frontend:
     #image: builder:latest
     container_name: frontend
@@ -79,15 +93,18 @@ services:
       TZ: Asia/Tokyo
     volumes:
       - ../cs:/home/${USER}/projects/ems/cs
-    #entrypoint: npm run dev
+    entrypoint: npm run dev
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    working_dir: /home/${USER}/projects/ems/cs
+    command: npm run dev
     restart:
       on-failure
     tty: true
     stdin_open: true
     ports:
-      - "10080:10080"
+      - "8086:8086"
     networks:
        ems_net:
          ipv4_address: 172.16.100.210

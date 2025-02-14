@@ -6,25 +6,26 @@ ARG USER_ID=1001
 
 ARG USER_HOME=/home/${USERNAME}
 ARG PROJECT_BASE=${USER_HOME}/projects/ems
-ARG TODO_DIR=${PROJECT_BASE}/todo
 ARG PROJECT_ROOT=${PROJECT_BASE}/ss
+ARG SCRIPTS=${PROJECT_BASE}/scripts
+#COPY ss/go.mod ${PROJECT_ROOT}/go.mod
 ######
 # Create user, working directory
 ######
 #RUN addgroup -g ${USER_ID} ${USERNAME} \
-RUN adduser -D -s /bin/sh -u ${USER_ID} ${USERNAME} \
-    && mkdir -p ${TODO_DIR}
-### set build context set ems in compose.yaml
-COPY my-first-golang/todo/ ${TODO_DIR}/
+RUN adduser -D -s /bin/sh -u ${USER_ID} ${USERNAME}
+#RUN go install github.com/cespare/reflex@latest
 
-WORKDIR ${PROJECT_BASE}/todo
-RUN go mod download
-
-RUN go install github.com/cespare/reflex@latest \
-    && go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+# RUN --mount=type=cache,target=/go/pkg/mod \
+#     --mount=type=cache,target=${USER_HOME}/.cache/go-build \
+#     --mount=type=bind,source=ss,target=${PROJECT_ROOT},readwrite \
+#     go mod tidy
+    # go build ${PROJECT_ROOT}/cmd/manage/main.go
+    # go mod download -x
+# WORKDIR ${PROJECT_ROOT}
+RUN chown -R ${USERNAME}:${USERNAME} /go
+#RUN go mod download
 #####
 # login user
 #####
 USER ${USERNAME}
-WORKDIR ${PROJECT_ROOT}
-

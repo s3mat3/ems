@@ -67,11 +67,19 @@ dist/
 public/
 debug/
 pg_data/
+sndb/
+exp/
 .ccls_root
 .ccls-cache
 compile_commands.json
+# ca, keys
+*.csr
+*.crt
+*.key
+*.pem
 #
 # docker
 #
 pg-data/
+go/
 .env
