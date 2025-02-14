@@ -8,23 +8,41 @@
  */
 package web
 
-
-import(
+import (
     "time"
-    
-    "github.com/gin-gonic/gin"
-    "github.com/gin-contrib/cors"
 
-    "ems/ss/driver/web/handler"
-    "ems/ss/adapter/controller"
+    "github.com/gin-contrib/cors"
+    "github.com/gin-gonic/gin"
+
+    "ems/ss/registry"
 )
+
+//
 //
 func SetupRoute() *gin.Engine {
-    controller := controller.NewManageController()
-    handler    := handler.NewManageHandler(controller)
+    helth := registry.CreateHelthHandler()
+    hello := registry.CreateHelloHandler()
+    login := registry.CreateLoginHandler()
 
-    router     := gin.Default()
-    // setup for cors
+    router := gin.Default()
+    SetupCors(router)
+    SetupSecurityHeaders(router)
+    // routing
+    root := router.Group("/")
+    {
+        root.GET ( "helth", helth.Check()) // helth check
+        root.GET ( "hello", hello.GET()) // given public key
+        root.POST( "hello", hello.POST()) // take client secret key and serve ssid
+        root.POST( "login", login.TryLogin()) // login request serve api token
+        // v1 := router.Group("/v1")
+        // {
+        //     v1.POST()
+        // }
+    }
+    return router
+}
+
+func SetupCors(router *gin.Engine) {
     router.Use(cors.New(cors.Config{
         AllowMethods: []string{"POST", "GET", "OPTIONS", "PUT", "DELETE",},
         AllowHeaders: []string{
@@ -35,14 +53,27 @@ func SetupRoute() *gin.Engine {
             "X-CSRF-Token",
             "Authorization",
         },
-        AllowOrigins: []string{"http://localhost:28080"},
+        // temp-id for session id
+        // temp-range for access permission use in client
+        ExposeHeaders: []string {
+            "X-Temp-Id",
+            "X-Temp-Range",
+        },
+        AllowCredentials: true,
+        AllowOrigins: []string{"http://localhost:5173"},
         MaxAge: 24 * time.Hour,
     }))
-
-
-    router.GET(    "/helth", handler.Helth())
-    router.GET(    "/v1",    handler.Hello())
-    return router
 }
 
+func SetupSecurityHeaders(router *gin.Engine) {
+    router.Use(func (c *gin.Context){
+        c.Header("X-Frame-Options", "DENY")
+        c.Header("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
+        c.Header("X-XSS-Protection", "1; mode=block")
+        c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+        c.Header("Referrer-Policy", "strict-origin")
+        c.Header("X-Content-Type-Options", "nosniff")
+        c.Header("Permissions-Policy", "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()")
+    })
+}
 /* //<-- router.go ends here */

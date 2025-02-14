@@ -10,4 +10,10 @@ package presenter
 
 type H map[string]string
 
+// type HelloResponse struct {
+//     Message string `json:"message"`
+//     Pub string `json:"pub"`
+// }
+
+
 /* //<-- global.go ends here */

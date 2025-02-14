@@ -13,8 +13,9 @@ package controller
 type Context interface {
     Abort()
     BindJSON(obj interface{}) error
+    ShouldBindJSON(obj interface{}) error
     JSON(code int, obj interface{})
-    Param(ket string) string
+    Param(key string) string
     Header(string, string)
 }
 
