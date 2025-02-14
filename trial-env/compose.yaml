@@ -93,12 +93,11 @@ services:
       TZ: Asia/Tokyo
     volumes:
       - ../cs:/home/${USER}/projects/ems/cs
-    entrypoint: npm run dev
+    working_dir: /home/${USER}/projects/ems/cs
+    command: npm run dev
     depends_on:
       backend:
         condition: service_healthy
-    working_dir: /home/${USER}/projects/ems/cs
-    command: npm run dev
     restart:
       on-failure
     tty: true

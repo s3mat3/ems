@@ -21,6 +21,7 @@ set(EMS_SCRIPTS_DIRECTORY ${EMS_ROOT_DIRECTORY}/scripts)
 set(EMS_CS_ROOT ${EMS_ROOT_DIRECTORY}/cs)
 set(EMS_SS_ROOT ${EMS_ROOT_DIRECTORY}/ss)
 set(EMS_STUDY_ROOT ${EMS_ROOT_DIRECTORY}/my-first-golang)
+set(EMS_DOCKER_ROOT ${EMS_ROOT_DIRECTORY}/trial-env)
 ## output directories
 set(EMS_OUTPUT_ROOT ${EMS_ROOT_DIRECTORY}/public)
 set(EMS_BIN_OUTPUT ${EMS_OUTPUT_ROOT}/site)
@@ -57,9 +58,14 @@ if(EMS_CS_COMPILE)
 endif()
 
 add_custom_target(run
-  COMMAND ems-api
-  WORKING_DIRECTORY ${EMS_BIN_OUTPUT}
-  COMMENT "Running test server..."
+  COMMAND docker compose up -d
+  WORKING_DIRECTORY ${EMS_DOCKER_ROOT}
+  COMMENT "Running developing environment..."
+  )
+add_custom_target(stop
+  COMMAND docker compose down
+  WORKING_DIRECTORY ${EMS_DOCKER_ROOT}
+  COMMENT "Stoping developing environment..."
   )
 
 add_custom_target(compile-commands
