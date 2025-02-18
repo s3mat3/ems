@@ -10,7 +10,7 @@ package web
 
 import (
     "time"
-
+    "os"
     "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
 
@@ -43,6 +43,7 @@ func SetupRoute() *gin.Engine {
 }
 
 func SetupCors(router *gin.Engine) {
+    origins := os.Getenv("PERMIT_URLS")
     router.Use(cors.New(cors.Config{
         AllowMethods: []string{"POST", "GET", "OPTIONS", "PUT", "DELETE",},
         AllowHeaders: []string{
@@ -60,7 +61,7 @@ func SetupCors(router *gin.Engine) {
             "X-Temp-Range",
         },
         AllowCredentials: true,
-        AllowOrigins: []string{"http://localhost:5173"},
+        AllowOrigins: []string{origins},
         MaxAge: 24 * time.Hour,
     }))
 }

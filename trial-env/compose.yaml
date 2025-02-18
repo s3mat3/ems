@@ -28,10 +28,10 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - "25432:5432"
+      - ${DB_DOCKER_PORTS}
     networks:
        ems_net:
-         ipv4_address: 172.16.100.100
+         ipv4_address: ${DB_ADDRESS}
   #############
   ## develop ##
   #############
@@ -51,6 +51,10 @@ services:
     environment:
       LANG: C.UTF-8
       TZ: Asia/Tokyo
+      SS_PORT: ${SS_PORT}
+      SS_PEM_FILE: ${SS_PEM_FILE}
+      SS_KEY_FILE: ${SS_KEY_FILE}
+      PERMIT_URLS: ${CS_URL}
     volumes:
       - ../ss:/home/${USER}/projects/ems/ss
       - ../scripts:/home/${USER}/projects/ems/scripts
@@ -58,11 +62,11 @@ services:
     working_dir: /home/${USER}/projects/ems/ss
     command: ../scripts/rungo ./cmd/manage/main.go
     healthcheck:
-      test: "wget --no-check-certificate --spider https://172.16.100.220:10443/helth || exit 1"
+      test: "wget --no-check-certificate --spider ${SS_API_URL}/helth || exit 1"
       interval: 10s
       timeout: 8s
       retries: 5
-      start_period: 30s
+      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
@@ -71,10 +75,10 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - "10443:10443"
+      - ${SS_DOCKER_PORTS}
     networks:
        ems_net:
-         ipv4_address: 172.16.100.220
+         ipv4_address: ${SS_ADDRESS}
   #####################################
   ## for frontend (vite environment) ##
   #####################################
@@ -91,6 +95,8 @@ services:
     environment:
       LANG: C.UTF-8
       TZ: Asia/Tokyo
+      VITE_PORT: ${CS_PORT}
+      VITE_API_URL: ${SS_API_URL}
     volumes:
       - ../cs:/home/${USER}/projects/ems/cs
     working_dir: /home/${USER}/projects/ems/cs
@@ -103,10 +109,10 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - "8086:8086"
+      - ${CS_DOCKER_PORT}
     networks:
        ems_net:
-         ipv4_address: 172.16.100.210
+         ipv4_address: ${CS_ADDRESS}
 #############################
 ## config internal network ##
 #############################

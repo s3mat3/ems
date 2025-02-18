@@ -9,7 +9,9 @@
 package main
 
 import (
+    "fmt"
     "log"
+    "os"
     "github.com/jmoiron/sqlx"
     _ "github.com/lib/pq"
     "ems/ss/driver/web"
@@ -40,9 +42,16 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-
+    fmt.Println(os.Getwd())
+    port := ":" + os.Getenv("SS_PORT")
+    fmt.Println(port)
+    pem := os.Getenv("SS_PEM_FILE")
+    fmt.Println(pem)
+    key := os.Getenv("SS_KEY_FILE")
+    fmt.Println(key)
     router := web.SetupRoute()
-    if err := router.RunTLS(":10443", "server.pem", "server.key"); err != nil {
+    // if err := router.RunTLS(port, "server.pem", "server.key"); err != nil {
+    if err := router.RunTLS(port, pem, key); err != nil {
         panic(err)
     }
 
